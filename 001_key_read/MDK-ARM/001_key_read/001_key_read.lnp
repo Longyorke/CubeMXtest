@@ -1,0 +1,26 @@
+--cpu=Cortex-M4.fp.sp
+"001_key_read\startup_stm32f429xx.o"
+"001_key_read\main.o"
+"001_key_read\gpio.o"
+"001_key_read\stm32f4xx_it.o"
+"001_key_read\stm32f4xx_hal_msp.o"
+"001_key_read\stm32f4xx_hal_tim.o"
+"001_key_read\stm32f4xx_hal_tim_ex.o"
+"001_key_read\stm32f4xx_hal_rcc.o"
+"001_key_read\stm32f4xx_hal_rcc_ex.o"
+"001_key_read\stm32f4xx_hal_flash.o"
+"001_key_read\stm32f4xx_hal_flash_ex.o"
+"001_key_read\stm32f4xx_hal_flash_ramfunc.o"
+"001_key_read\stm32f4xx_hal_gpio.o"
+"001_key_read\stm32f4xx_hal_dma_ex.o"
+"001_key_read\stm32f4xx_hal_dma.o"
+"001_key_read\stm32f4xx_hal_pwr.o"
+"001_key_read\stm32f4xx_hal_pwr_ex.o"
+"001_key_read\stm32f4xx_hal_cortex.o"
+"001_key_read\stm32f4xx_hal.o"
+"001_key_read\stm32f4xx_hal_exti.o"
+"001_key_read\system_stm32f4xx.o"
+--library_type=microlib --strict --scatter "001_key_read\001_key_read.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "001_key_read.map" -o 001_key_read\001_key_read.axf
