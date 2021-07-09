@@ -55,6 +55,34 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void scan_keys(void)
+{
+			if(HAL_GPIO_ReadPin(KEY0_GPIO_Port,KEY0_Pin) == GPIO_PIN_RESET)
+		{
+			HAL_Delay(100);
+			if(HAL_GPIO_ReadPin(KEY0_GPIO_Port,KEY0_Pin) == GPIO_PIN_RESET)
+			{
+				HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
+			}
+		}
+		if(HAL_GPIO_ReadPin(KEY1_GPIO_Port,KEY1_Pin) == GPIO_PIN_RESET)
+		{
+			HAL_Delay(100);
+			if(HAL_GPIO_ReadPin(KEY1_GPIO_Port,KEY1_Pin) == GPIO_PIN_RESET)
+			{
+				HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
+			}
+		}
+		if(HAL_GPIO_ReadPin(KEY2_GPIO_Port,KEY2_Pin) == GPIO_PIN_RESET)
+		{
+			HAL_Delay(100);
+			if(HAL_GPIO_ReadPin(KEY2_GPIO_Port,KEY2_Pin) == GPIO_PIN_RESET)
+			{
+				HAL_GPIO_WritePin(LED1_GPIO_Port,LED1_Pin|LED0_Pin,GPIO_PIN_SET);
+			}
+		}
+}
+
 
 /* USER CODE END 0 */
 
@@ -94,30 +122,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		if(HAL_GPIO_ReadPin(KEY0_GPIO_Port,KEY0_Pin) == GPIO_PIN_RESET)
-		{
-			HAL_Delay(100);
-			if(HAL_GPIO_ReadPin(KEY0_GPIO_Port,KEY0_Pin) == GPIO_PIN_RESET)
-			{
-				HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
-			}
-		}
-		if(HAL_GPIO_ReadPin(KEY1_GPIO_Port,KEY1_Pin) == GPIO_PIN_RESET)
-		{
-			HAL_Delay(100);
-			if(HAL_GPIO_ReadPin(KEY1_GPIO_Port,KEY1_Pin) == GPIO_PIN_RESET)
-			{
-				HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
-			}
-		}
-		if(HAL_GPIO_ReadPin(KEY2_GPIO_Port,KEY2_Pin) == GPIO_PIN_RESET)
-		{
-			HAL_Delay(100);
-			if(HAL_GPIO_ReadPin(KEY2_GPIO_Port,KEY2_Pin) == GPIO_PIN_RESET)
-			{
-				HAL_GPIO_WritePin(LED1_GPIO_Port,LED1_Pin|LED0_Pin,GPIO_PIN_SET);
-			}
-		}
+		scan_keys();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
