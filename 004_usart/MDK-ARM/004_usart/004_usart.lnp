@@ -1,0 +1,28 @@
+--cpu=Cortex-M4.fp.sp
+"004_usart\startup_stm32f429xx.o"
+"004_usart\main.o"
+"004_usart\gpio.o"
+"004_usart\usart.o"
+"004_usart\stm32f4xx_it.o"
+"004_usart\stm32f4xx_hal_msp.o"
+"004_usart\stm32f4xx_hal_tim.o"
+"004_usart\stm32f4xx_hal_tim_ex.o"
+"004_usart\stm32f4xx_hal_uart.o"
+"004_usart\stm32f4xx_hal_rcc.o"
+"004_usart\stm32f4xx_hal_rcc_ex.o"
+"004_usart\stm32f4xx_hal_flash.o"
+"004_usart\stm32f4xx_hal_flash_ex.o"
+"004_usart\stm32f4xx_hal_flash_ramfunc.o"
+"004_usart\stm32f4xx_hal_gpio.o"
+"004_usart\stm32f4xx_hal_dma_ex.o"
+"004_usart\stm32f4xx_hal_dma.o"
+"004_usart\stm32f4xx_hal_pwr.o"
+"004_usart\stm32f4xx_hal_pwr_ex.o"
+"004_usart\stm32f4xx_hal_cortex.o"
+"004_usart\stm32f4xx_hal.o"
+"004_usart\stm32f4xx_hal_exti.o"
+"004_usart\system_stm32f4xx.o"
+--library_type=microlib --strict --scatter "004_usart\004_usart.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "004_usart.map" -o 004_usart\004_usart.axf
