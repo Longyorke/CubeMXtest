@@ -28,15 +28,16 @@ Section Cross References
     main.o(i.main) refers to adc.o(i.MX_ADC1_Init) for MX_ADC1_Init
     main.o(i.main) refers to usart.o(i.MX_USART1_UART_Init) for MX_USART1_UART_Init
     main.o(i.main) refers to stm32f4xx_hal_uart.o(i.HAL_UART_Transmit) for HAL_UART_Transmit
+    main.o(i.main) refers to stm32f4xx_hal_gpio.o(i.HAL_GPIO_WritePin) for HAL_GPIO_WritePin
     main.o(i.main) refers to main.o(i.read_adc1) for read_adc1
     main.o(i.main) refers to main.o(i.usart1_conv_info) for usart1_conv_info
     main.o(i.main) refers to stm32f4xx_hal.o(i.HAL_Delay) for HAL_Delay
     main.o(i.main) refers to main.o(.data) for .data
     main.o(i.main) refers to usart.o(.bss) for huart1
     main.o(i.read_adc1) refers to stm32f4xx_hal_adc.o(i.HAL_ADC_Start) for HAL_ADC_Start
-    main.o(i.read_adc1) refers to stm32f4xx_hal_gpio.o(i.HAL_GPIO_WritePin) for HAL_GPIO_WritePin
     main.o(i.read_adc1) refers to stm32f4xx_hal_adc.o(i.HAL_ADC_PollForConversion) for HAL_ADC_PollForConversion
     main.o(i.read_adc1) refers to stm32f4xx_hal_adc.o(i.HAL_ADC_GetValue) for HAL_ADC_GetValue
+    main.o(i.read_adc1) refers to stm32f4xx_hal_gpio.o(i.HAL_GPIO_WritePin) for HAL_GPIO_WritePin
     main.o(i.read_adc1) refers to stm32f4xx_hal_adc.o(i.HAL_ADC_Stop) for HAL_ADC_Stop
     main.o(i.read_adc1) refers to adc.o(.bss) for hadc1
     main.o(i.read_adc1) refers to main.o(.data) for .data
@@ -1045,10 +1046,10 @@ Image Symbol Table
     i._sputc                                 0x08001a6c   Section        0  printf1.o(i._sputc)
     _sputc                                   0x08001a6d   Thumb Code    10  printf1.o(i._sputc)
     i.main                                   0x08001a78   Section        0  main.o(i.main)
-    i.read_adc1                              0x08001ab8   Section        0  main.o(i.read_adc1)
-    i.usart1_conv_info                       0x08001b14   Section        0  main.o(i.usart1_conv_info)
-    .constdata                               0x08001b8c   Section       16  system_stm32f4xx.o(.constdata)
-    .constdata                               0x08001b9c   Section        8  system_stm32f4xx.o(.constdata)
+    i.read_adc1                              0x08001ac8   Section        0  main.o(i.read_adc1)
+    i.usart1_conv_info                       0x08001b18   Section        0  main.o(i.usart1_conv_info)
+    .constdata                               0x08001b90   Section       16  system_stm32f4xx.o(.constdata)
+    .constdata                               0x08001ba0   Section        8  system_stm32f4xx.o(.constdata)
     .data                                    0x20000000   Section       62  main.o(.data)
     .data                                    0x20000040   Section       12  stm32f4xx_hal.o(.data)
     .data                                    0x2000004c   Section        4  system_stm32f4xx.o(.data)
@@ -1282,13 +1283,13 @@ Image Symbol Table
     __scatterload_copy                       0x080018f9   Thumb Code    14  handlers.o(i.__scatterload_copy)
     __scatterload_null                       0x08001907   Thumb Code     2  handlers.o(i.__scatterload_null)
     __scatterload_zeroinit                   0x08001909   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    main                                     0x08001a79   Thumb Code    56  main.o(i.main)
-    read_adc1                                0x08001ab9   Thumb Code    80  main.o(i.read_adc1)
-    usart1_conv_info                         0x08001b15   Thumb Code    76  main.o(i.usart1_conv_info)
-    AHBPrescTable                            0x08001b8c   Data          16  system_stm32f4xx.o(.constdata)
-    APBPrescTable                            0x08001b9c   Data           8  system_stm32f4xx.o(.constdata)
-    Region$$Table$$Base                      0x08001ba4   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08001bc4   Number         0  anon$$obj.o(Region$$Table)
+    main                                     0x08001a79   Thumb Code    66  main.o(i.main)
+    read_adc1                                0x08001ac9   Thumb Code    68  main.o(i.read_adc1)
+    usart1_conv_info                         0x08001b19   Thumb Code    76  main.o(i.usart1_conv_info)
+    AHBPrescTable                            0x08001b90   Data          16  system_stm32f4xx.o(.constdata)
+    APBPrescTable                            0x08001ba0   Data           8  system_stm32f4xx.o(.constdata)
+    Region$$Table$$Base                      0x08001ba8   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08001bc8   Number         0  anon$$obj.o(Region$$Table)
     ADC1_Value                               0x20000000   Data           2  main.o(.data)
     ADC1_Volt                                0x20000002   Data           2  main.o(.data)
     str_1                                    0x20000004   Data          58  main.o(.data)
@@ -1309,9 +1310,9 @@ Memory Map of the image
 
   Image Entry point : 0x080001ad
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00001c14, Max: 0x00100000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00001c18, Max: 0x00100000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00001bc4, Max: 0x00100000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00001bc8, Max: 0x00100000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -1407,27 +1408,27 @@ Memory Map of the image
     0x08001918   0x08001918   0x00000154   Code   RO         2336    i._printf_core      mc_w.l(printf1.o)
     0x08001a6c   0x08001a6c   0x0000000a   Code   RO         2338    i._sputc            mc_w.l(printf1.o)
     0x08001a76   0x08001a76   0x00000002   PAD
-    0x08001a78   0x08001a78   0x00000040   Code   RO           15    i.main              main.o
-    0x08001ab8   0x08001ab8   0x0000005c   Code   RO           16    i.read_adc1         main.o
-    0x08001b14   0x08001b14   0x00000078   Code   RO           17    i.usart1_conv_info  main.o
-    0x08001b8c   0x08001b8c   0x00000010   Data   RO         2244    .constdata          system_stm32f4xx.o
-    0x08001b9c   0x08001b9c   0x00000008   Data   RO         2245    .constdata          system_stm32f4xx.o
-    0x08001ba4   0x08001ba4   0x00000020   Data   RO         2587    Region$$Table       anon$$obj.o
+    0x08001a78   0x08001a78   0x00000050   Code   RO           15    i.main              main.o
+    0x08001ac8   0x08001ac8   0x00000050   Code   RO           16    i.read_adc1         main.o
+    0x08001b18   0x08001b18   0x00000078   Code   RO           17    i.usart1_conv_info  main.o
+    0x08001b90   0x08001b90   0x00000010   Data   RO         2244    .constdata          system_stm32f4xx.o
+    0x08001ba0   0x08001ba0   0x00000008   Data   RO         2245    .constdata          system_stm32f4xx.o
+    0x08001ba8   0x08001ba8   0x00000020   Data   RO         2587    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM2 (Exec base: 0x10000000, Load base: 0x08001c14, Size: 0x00000000, Max: 0x00010000, ABSOLUTE)
+    Execution Region RW_IRAM2 (Exec base: 0x10000000, Load base: 0x08001c18, Size: 0x00000000, Max: 0x00010000, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08001bc4, Size: 0x00000518, Max: 0x00030000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08001bc8, Size: 0x00000518, Max: 0x00030000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08001bc4   0x0000003e   Data   RW           19    .data               main.o
-    0x2000003e   0x08001c02   0x00000002   PAD
-    0x20000040   0x08001c04   0x0000000c   Data   RW         1639    .data               stm32f4xx_hal.o
-    0x2000004c   0x08001c10   0x00000004   Data   RW         2246    .data               system_stm32f4xx.o
+    0x20000000   0x08001bc8   0x0000003e   Data   RW           19    .data               main.o
+    0x2000003e   0x08001c06   0x00000002   PAD
+    0x20000040   0x08001c08   0x0000000c   Data   RW         1639    .data               stm32f4xx_hal.o
+    0x2000004c   0x08001c14   0x00000004   Data   RW         2246    .data               system_stm32f4xx.o
     0x20000050        -       0x00000040   Zero   RW           18    .bss                main.o
     0x20000090        -       0x00000048   Zero   RW          204    .bss                adc.o
     0x200000d8        -       0x00000040   Zero   RW          246    .bss                usart.o
@@ -1443,7 +1444,7 @@ Image component sizes
 
        196         24          0          0         72       1685   adc.o
        160         14          0          0          0        959   gpio.o
-       414         74          0         62         64     734029   main.o
+       418         80          0         62         64     734029   main.o
         36          8        428          0       1024        844   startup_stm32f429xx.o
        180         28          0         12          0       9605   stm32f4xx_hal.o
       1200         60          0          0          0       5969   stm32f4xx_hal_adc.o
@@ -1459,7 +1460,7 @@ Image component sizes
        180         22          0          0         64       1706   usart.o
 
     ----------------------------------------------------------------------
-      5904        422        484         80       1224     815249   Object Totals
+      5908        428        484         80       1224     815249   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         20          0          0          2          0          0   (incl. Padding)
 
@@ -1504,15 +1505,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      6624        448        484         80       1224     810677   Grand Totals
-      6624        448        484         80       1224     810677   ELF Image Totals
-      6624        448        484         80          0          0   ROM Totals
+      6628        454        484         80       1224     810677   Grand Totals
+      6628        454        484         80       1224     810677   ELF Image Totals
+      6628        454        484         80          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 7108 (   6.94kB)
+    Total RO  Size (Code + RO Data)                 7112 (   6.95kB)
     Total RW  Size (RW Data + ZI Data)              1304 (   1.27kB)
-    Total ROM Size (Code + RO Data + RW Data)       7188 (   7.02kB)
+    Total ROM Size (Code + RO Data + RW Data)       7192 (   7.02kB)
 
 ==============================================================================
 

@@ -74,7 +74,7 @@ void usart1_conv_info(void)
 void read_adc1(void)
 {
 	HAL_ADC_Start(&hadc1);
-	LED0_ON();
+	
 	
 	if(HAL_OK == HAL_ADC_PollForConversion(&hadc1,100))
 	{
@@ -127,7 +127,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		
+		LED0_ON();
 		read_adc1();
 		usart1_conv_info();
 		HAL_Delay(500);
