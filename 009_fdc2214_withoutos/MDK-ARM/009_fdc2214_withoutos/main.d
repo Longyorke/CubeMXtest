@@ -32,3 +32,6 @@
 009_fdc2214_withoutos\main.o: ../Inc/usart.h
 009_fdc2214_withoutos\main.o: D:\software\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 009_fdc2214_withoutos\main.o: ../Inc/gpio.h
+009_fdc2214_withoutos\main.o: ..\Drivers\FDC2214\fdc2214.h
+009_fdc2214_withoutos\main.o: ..\Drivers\FDC2214\DataType.h
+009_fdc2214_withoutos\main.o: ..\Drivers\IIC\iic.h

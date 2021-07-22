@@ -25,6 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "fdc2214.h"
 
 /* USER CODE END Includes */
 
@@ -45,7 +46,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-static uint32_t fac_us=0;							//us延时倍乘数
+
+ static unsigned int res_CH4_DATA = 0;
 
 /* USER CODE END PV */
 
@@ -58,6 +60,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
 
 /* USER CODE END 0 */
 
@@ -91,6 +94,9 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+	IIC_Init();
+	FDC2214_Init();
+	printf("hello");
 
   /* USER CODE END 2 */
 
@@ -98,8 +104,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
 
+		FDC2214_GetChannelData(FDC2214_Channel_3, &res_CH4_DATA);//读FDC2214_Channel_3,也就是通道4，放到res_CH4_DATA中
+		printf("CH3=%d\n",res_CH4_DATA);
+		HAL_Delay(500);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -156,24 +164,11 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 
 
-void delay_us(uint32_t nus)
+void HAL_Delay_us(uint32_t nus)
 {		
-	uint32_t ticks;
-	uint32_t told,tnow,tcnt=0;
-	uint32_t reload=SysTick->LOAD;				//LOAD的值	    	 
-	ticks=nus*fac_us; 						//需要的节拍数 
-	told=SysTick->VAL;        				//刚进入时的计数器值
-	while(1)
-	{
-		tnow=SysTick->VAL;	
-		if(tnow!=told)
-		{	    
-			if(tnow<told)tcnt+=told-tnow;	//这里注意一下SYSTICK是一个递减的计数器就可以了.
-			else tcnt+=reload-tnow+told;	    
-			told=tnow;
-			if(tcnt>=ticks)break;			//时间超过/等于要延迟的时间,则退出.
-		}  
-	};
+	HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000000);
+	HAL_Delay(nus-1);
+	HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
 }
 
 /* USER CODE END 4 */
