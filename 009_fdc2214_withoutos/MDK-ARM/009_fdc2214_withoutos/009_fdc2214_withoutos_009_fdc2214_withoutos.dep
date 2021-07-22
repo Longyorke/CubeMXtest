@@ -31,7 +31,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h)(0x60E6E728
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h)(0x60E6E728)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x60E6E728)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x60E6E728)
-I (../Inc/usart.h)(0x60F9511E)
+I (../Inc/usart.h)(0x60F9584F)
+I (D:\software\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E53505C)
 I (../Inc/gpio.h)(0x60F9511D)
 F (../Src/gpio.c)(0x60F9511D)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\Drivers\IIC -I ..\Drivers\FDC2214-I.\RTE\_009_fdc2214_withoutos-ID:\software\Keil_v5\ARM\CMSIS\5.7.0\CMSIS\Core\Include-ID:\software\Keil_v5\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F429xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F429xx-o 009_fdc2214_withoutos\gpio.o --omf_browse 009_fdc2214_withoutos\gpio.crf --depend 009_fdc2214_withoutos\gpio.d)
 I (../Inc/gpio.h)(0x60F9511D)
@@ -64,8 +65,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h)(0x60E6E728
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h)(0x60E6E728)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x60E6E728)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x60E6E728)
-F (../Src/usart.c)(0x60F9511E)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\Drivers\IIC -I ..\Drivers\FDC2214-I.\RTE\_009_fdc2214_withoutos-ID:\software\Keil_v5\ARM\CMSIS\5.7.0\CMSIS\Core\Include-ID:\software\Keil_v5\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F429xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F429xx-o 009_fdc2214_withoutos\usart.o --omf_browse 009_fdc2214_withoutos\usart.crf --depend 009_fdc2214_withoutos\usart.d)
-I (../Inc/usart.h)(0x60F9511E)
+F (../Src/usart.c)(0x60F95868)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\Drivers\IIC -I ..\Drivers\FDC2214-I.\RTE\_009_fdc2214_withoutos-ID:\software\Keil_v5\ARM\CMSIS\5.7.0\CMSIS\Core\Include-ID:\software\Keil_v5\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F429xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F429xx-o 009_fdc2214_withoutos\usart.o --omf_browse 009_fdc2214_withoutos\usart.crf --depend 009_fdc2214_withoutos\usart.d)
+I (../Inc/usart.h)(0x60F9584F)
 I (../Inc/main.h)(0x60F955BC)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x60E6E728)
 I (../Inc/stm32f4xx_hal_conf.h)(0x60F9511F)
@@ -95,6 +96,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h)(0x60E6E728
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h)(0x60E6E728)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x60E6E728)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x60E6E728)
+I (D:\software\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E53505C)
 F (../Src/stm32f4xx_it.c)(0x60F9511E)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\Drivers\IIC -I ..\Drivers\FDC2214-I.\RTE\_009_fdc2214_withoutos-ID:\software\Keil_v5\ARM\CMSIS\5.7.0\CMSIS\Core\Include-ID:\software\Keil_v5\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F429xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F429xx-o 009_fdc2214_withoutos\stm32f4xx_it.o --omf_browse 009_fdc2214_withoutos\stm32f4xx_it.crf --depend 009_fdc2214_withoutos\stm32f4xx_it.d)
 I (../Inc/main.h)(0x60F955BC)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x60E6E728)

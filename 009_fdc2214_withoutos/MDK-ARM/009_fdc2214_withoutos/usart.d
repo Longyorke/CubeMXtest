@@ -30,3 +30,4 @@
 009_fdc2214_withoutos\usart.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 009_fdc2214_withoutos\usart.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 009_fdc2214_withoutos\usart.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+009_fdc2214_withoutos\usart.o: D:\software\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
