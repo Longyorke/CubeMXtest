@@ -29,12 +29,11 @@
 #include <sfud.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include <stm32f4xx_hal.h>
-#include <stm32f4xx_hal_gpio.h>
+#include "stm32f4xx_hal_def.h"
 #include <string.h>
 
 typedef struct {
-    SPI_TypeDef *spix;
+    SPI_HandleTypeDef *hspix;
     GPIO_TypeDef *cs_gpiox;
     uint16_t cs_gpio_pin;
 } spi_user_data, *spi_user_data_t;
@@ -42,57 +41,6 @@ typedef struct {
 static char log_buf[256];
 
 void sfud_log_debug(const char *file, const long line, const char *format, ...);
-
-static void rcc_configuration(spi_user_data_t spi) {
-    if (spi->spix == SPI1) {
-        RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
-        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
-    } else if (spi->spix == SPI2) {
-        /* you can add SPI2 code here */
-    }
-}
-
-static void gpio_configuration(spi_user_data_t spi) {
-    GPIO_InitTypeDef GPIO_InitStructure;
-
-    if (spi->spix == SPI1) {
-        /* SCK:PA5  MISO:PA6  MOSI:PA7 */
-        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
-        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-        GPIO_Init(GPIOA, &GPIO_InitStructure);
-        /* CS: PC4 */
-        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
-        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-        GPIO_Init(GPIOC, &GPIO_InitStructure);
-        GPIO_SetBits(GPIOC, GPIO_Pin_4);
-    } else if (spi->spix == SPI2) {
-        /* you can add SPI2 code here */
-    }
-}
-
-static void spi_configuration(spi_user_data_t spi) {
-    SPI_InitTypeDef SPI_InitStructure;
-
-    SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex; //SPI ����Ϊ˫��˫��ȫ˫��
-    SPI_InitStructure.SPI_Mode = SPI_Mode_Master;                      //����Ϊ�� SPI
-    SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;                  //SPI ���ͽ��� 8 λ֡�ṹ
-    SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;                         //ʱ�����յ�
-    SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;                       //���ݲ����ڵ�һ��ʱ����
-    //TODO �Ժ���Գ���Ӳ�� CS
-    SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;                          //�ڲ�  NSS �ź��� SSI λ����
-    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2; //������Ԥ��ƵֵΪ 2
-    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;                 //���ݴ���� MSB λ��ʼ
-    SPI_InitStructure.SPI_CRCPolynomial = 7;                           // CRC ֵ����Ķ���ʽ
-
-    SPI_I2S_DeInit(spi->spix);
-    SPI_Init(spi->spix, &SPI_InitStructure);
-
-    SPI_CalculateCRC(spi->spix, DISABLE);
-    SPI_Cmd(spi->spix, ENABLE);
-}
 
 static void spi_lock(const sfud_spi *spi) {
     __disable_irq();
@@ -119,9 +67,9 @@ static sfud_err spi_write_read(const sfud_spi *spi, const uint8_t *write_buf, si
     }
 
     GPIO_ResetBits(spi_dev->cs_gpiox, spi_dev->cs_gpio_pin);
-    /* ��ʼ��д���� */
+    /* reset cs pin */
     for (size_t i = 0, retry_times; i < write_size + read_size; i++) {
-        /* ��д�������е����ݵ� SPI ���ߣ�����д�����д dummy(0xFF) �� SPI ���� */
+        /* read data */
         if (i < write_size) {
             send_data = *write_buf++;
         } else {
