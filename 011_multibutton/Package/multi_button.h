@@ -18,6 +18,7 @@
 
 typedef void (*BtnCallback)(void*);
 
+//按键事件
 typedef enum {
 	PRESS_DOWN = 0,
 	PRESS_UP,
@@ -30,6 +31,7 @@ typedef enum {
 	NONE_PRESS
 }PressEvent;
 
+//按键类
 typedef struct Button {
 	uint16_t ticks;
 	uint8_t  repeat : 4;
@@ -47,9 +49,12 @@ typedef struct Button {
 extern "C" {
 #endif
 
+//初始化按键对象，绑定按键的GPIO电平读取接口read_button_pin() ，后一个参数设置有效触发电平
 void button_init(struct Button* handle, uint8_t(*pin_level)(), uint8_t active_level);
+//注册按键事件
 void button_attach(struct Button* handle, PressEvent event, BtnCallback cb);
 PressEvent get_button_event(struct Button* handle);
+//启动按键
 int  button_start(struct Button* handle);
 void button_stop(struct Button* handle);
 void button_ticks(void);
