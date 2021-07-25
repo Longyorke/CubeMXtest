@@ -25,6 +25,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "lwrb/lwrb.h"
+#include <stdio.h>		//要使用printf
 
 /* USER CODE END Includes */
 
@@ -56,6 +58,23 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+//用于存放数据长度
+uint8_t data_len = 0,len = 0,i = 0;
+
+//用于串口接收,是缓冲区
+uint8_t recv_data = 0;
+
+//用于存储从缓冲区读取出的数据
+uint8_t read_data = 0;
+
+//用于串口1的lwrb句柄
+lwrb_t	usart1_lwrb;
+
+//开辟一块内存用于缓冲区
+#define USART1_BUFFDATA_SIZE	150
+uint8_t usart1_buffdata[USART1_BUFFDATA_SIZE];
+
 
 /* USER CODE END 0 */
 
@@ -89,6 +108,16 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+	printf("Test LwRB\r\n\t");
+
+	//初始化lwrb句柄
+	if(1 != lwrb_init(&usart1_lwrb, (uint8_t*)usart1_buffdata, USART1_BUFFDATA_SIZE))
+	{
+		printf("usart1 lwrb init fail.\r\n");
+	}
+
+	//使能串口中断接收
+	HAL_UART_Receive_IT(&huart1, (uint8_t*)&recv_data, 1);
 
   /* USER CODE END 2 */
 
@@ -96,10 +125,42 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		
+		//从缓冲区读取数据。将数据从缓冲区复制到数据数组，并将缓冲区标记为可用的最大read_data字节数。
+		//返回读取并复制到数据数组的字节数
+			while((len = lwrb_read(&usart1_lwrb, (uint8_t*)&read_data, sizeof(read_data))) > 0)
+			{
+				/* 捕获起始标志 */
+				if(read_data == 0x3F)
+				{
+					//读取数据字节数，最大支持0xFF
+					if((len = lwrb_read(&usart1_lwrb, (uint8_t*)&read_data, sizeof(read_data))) > 0)
+					{
+						data_len = read_data;
+						printf("your data has %d byte(s):\r\n\t", data_len);
+					}
+					
+					//提取data_len个数据
+					for(i = 0; i < data_len; i++)
+					{
+						if((len = lwrb_read(&usart1_lwrb, (uint8_t*)&read_data, sizeof(read_data))) > 0)
+						{
+							printf("[0x%02x] ", read_data); 
+						}
+					}
+					printf("over\r\n");
+				}
+			}
+			HAL_Delay(200);
+				
+			}
+
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+  
   /* USER CODE END 3 */
 }
 
@@ -152,6 +213,17 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    /* 判断是哪个串口触发的中断 */
+    if(huart->Instance == huart1.Instance)
+    {
+		/* 将接收到的数据写入缓冲区 */
+		lwrb_write(&usart1_lwrb, &recv_data, 1);
+    //重新使能串口接收中断
+    HAL_UART_Receive_IT(&huart1, (uint8_t*)&recv_data, 1);
+    }
+}
 
 /* USER CODE END 4 */
 

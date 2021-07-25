@@ -22,6 +22,7 @@
 "012_ lwrb\stm32f4xx_hal.o"
 "012_ lwrb\stm32f4xx_hal_exti.o"
 "012_ lwrb\system_stm32f4xx.o"
+"012_ lwrb\lwrb.o"
 --library_type=microlib --strict --scatter "012_ lwrb\012_ lwrb.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

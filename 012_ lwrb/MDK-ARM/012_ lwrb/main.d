@@ -31,3 +31,6 @@
 012_ lwrb\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 012_ lwrb\main.o: ../Inc/usart.h
 012_ lwrb\main.o: ../Inc/gpio.h
+012_ lwrb\main.o: ..\Package\lwrb\src\include\lwrb/lwrb.h
+012_ lwrb\main.o: D:\software\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+012_ lwrb\main.o: D:\software\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

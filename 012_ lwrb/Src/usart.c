@@ -21,7 +21,7 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "stdio.h"
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -105,6 +105,35 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 } 
 
 /* USER CODE BEGIN 1 */
+int fputc(int ch, FILE *f)
+{
+#if 1
+    if (ch == '\n') {
+        HAL_UART_Transmit(&huart1, (void *)"\r", 1, 30000);
+    }
+    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
+    return ch;
+#else
+    while ((USART1->ISR & 0X40) == 0);
+    USART1->TDR = (uint8_t)ch;
+    return ch;
+#endif
+}
+
+int _write(int fd, char *ptr, int len)
+{
+    (void)HAL_UART_Transmit(&huart1, (uint8_t *)ptr, len, 0xFFFF);
+    return len;
+}
+
+int fgetc(FILE *f)
+{
+  /* Place your implementation of fgetc here */
+  /* e.g. readwrite a character to the USART1 and Loop until the end of transmission */
+  uint8_t ch = 0;
+  HAL_UART_Receive(&huart1, &ch, 1,30000);
+  return ch;
+}
 
 /* USER CODE END 1 */
 
