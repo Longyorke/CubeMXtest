@@ -78,7 +78,7 @@ typedef struct
 //----------------------------------------
 //全局变量定义,请使用EXT修饰
 EXT unsigned char g_Var;	
-EXT struct rt_ringbuffer msg_ring_buf;//存储消息的环形队列,在main.c中初始化
+
 
 //----------------------------------------	
 #endif
