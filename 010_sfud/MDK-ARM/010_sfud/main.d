@@ -33,3 +33,15 @@
 010_sfud\main.o: ../Inc/spi.h
 010_sfud\main.o: ../Inc/usart.h
 010_sfud\main.o: ../Inc/gpio.h
+010_sfud\main.o: ..\Package\config.h
+010_sfud\main.o: D:\software\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+010_sfud\main.o: D:\software\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+010_sfud\main.o: D:\software\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+010_sfud\main.o: D:\software\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+010_sfud\main.o: D:\software\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+010_sfud\main.o: D:\software\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+010_sfud\main.o: ..\Package\multi_button\multi_button.h
+010_sfud\main.o: ..\Package\sfud\inc\sfud.h
+010_sfud\main.o: ..\Package\sfud\inc\sfud_def.h
+010_sfud\main.o: ..\Package\sfud\inc\sfud_cfg.h
+010_sfud\main.o: ..\Package\sfud\inc\sfud_flash_def.h

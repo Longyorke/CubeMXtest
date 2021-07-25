@@ -26,6 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "config.h"
 
 /* USER CODE END Includes */
 
@@ -57,6 +58,54 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+//申请一个按键结构
+struct Button button1;
+
+//按键状态读取接口
+uint8_t read_button1_GPIO() 
+{
+	return HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin);
+}
+
+//按键回调函数
+void button1_callback(void *button)
+{
+    uint32_t btn_event_val; 
+    
+    btn_event_val = get_button_event((struct Button *)button); 
+    
+    switch(btn_event_val)
+    {
+	    case PRESS_DOWN:
+	        printf("---> key1 press down! <---\r\n"); 
+	    	break; 
+	
+	    case PRESS_UP: 
+	        printf("***> key1 press up! <***\r\n");
+	    	break; 
+	
+	    case PRESS_REPEAT: 
+	        printf("---> key1 press repeat! <---\r\n");
+	    	break; 
+	
+	    case SINGLE_CLICK: 
+	        printf("---> key1 single click! <---\r\n");
+	    	break; 
+	
+	    case DOUBLE_CLICK: 
+	        printf("***> key1 double click! <***\r\n");
+	    	break; 
+	
+	    case LONG_PRESS_START: 
+	        printf("---> key1 long press start! <---\r\n");
+	   		break; 
+	
+	    case LONG_PRESS_HOLD: 
+	        printf("***> key1 long press hold! <***\r\n");
+	    	break; 
+	}
+}
 
 /* USER CODE END 0 */
 
@@ -91,6 +140,24 @@ int main(void)
   MX_SPI5_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+	
+	printf("MultiButton+SFUD Test...\r\n");
+
+	//初始化按键对象
+	button_init(&button1, read_button1_GPIO, 0);
+	
+	//注册按钮事件回调函数
+
+//	button_attach(&button1, PRESS_DOWN,       button1_callback);
+//	button_attach(&button1, PRESS_UP,         button1_callback);
+//	button_attach(&button1, PRESS_REPEAT,     button1_callback);
+	button_attach(&button1, SINGLE_CLICK,     button1_callback);
+	button_attach(&button1, DOUBLE_CLICK,     button1_callback);
+//	button_attach(&button1, LONG_PRESS_START, button1_callback);
+//	button_attach(&button1, LONG_PRESS_HOLD,  button1_callback);
+
+	//启动按键
+	button_start(&button1);
 
   /* USER CODE END 2 */
 
@@ -99,7 +166,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+		button_ticks();
+		HAL_Delay(5);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

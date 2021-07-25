@@ -79,7 +79,7 @@ typedef struct
 //软件包头文件包含
 //#include "multi_timer.h"
 //#include "ringbuffer.h"
-//#include "multi_button.h"
+#include "multi_button.h"
 #include "sfud.h"
 
 //----------------------------------------
@@ -97,6 +97,7 @@ typedef struct
 
 
 
+//----------------------------------------	
 #endif
 
 /********************************************************************************************************

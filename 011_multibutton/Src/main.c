@@ -174,7 +174,6 @@ int main(void)
 		HAL_Delay(5);
 		
     /* USER CODE END WHILE */
-		
 
     /* USER CODE BEGIN 3 */
   }
