@@ -29,8 +29,9 @@
 #include <sfud.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include "stm32f4xx_hal_def.h"
+#include "config.h"
 #include <string.h>
+
 
 typedef struct {
     SPI_HandleTypeDef *hspix;
@@ -50,6 +51,7 @@ static void spi_unlock(const sfud_spi *spi) {
     __enable_irq();
 }
 
+
 /**
  * SPI write data then read data
  */
@@ -57,51 +59,51 @@ static sfud_err spi_write_read(const sfud_spi *spi, const uint8_t *write_buf, si
         size_t read_size) {
     sfud_err result = SFUD_SUCCESS;
     uint8_t send_data, read_data;
-    spi_user_data_t spi_dev = (spi_user_data_t) spi->user_data;
 
-    if (write_size) {
+    /**
+     * add your spi write and read code
+     */
+	/**********************************************************************/
+      spi_user_data_t spi_dev = (spi_user_data_t) spi->user_data;
+			
+	if (write_size) {
         SFUD_ASSERT(write_buf);
     }
     if (read_size) {
         SFUD_ASSERT(read_buf);
-    }
-
-    GPIO_ResetBits(spi_dev->cs_gpiox, spi_dev->cs_gpio_pin);
-    /* reset cs pin */
-    for (size_t i = 0, retry_times; i < write_size + read_size; i++) {
-        /* read data */
-        if (i < write_size) {
+    }		
+		
+     HAL_GPIO_WritePin(spi_dev->cs_gpiox,spi_dev->cs_gpio_pin,GPIO_PIN_RESET);
+    /* 开始读写数据 */
+	
+	for (size_t i = 0; i < write_size + read_size; i++) 
+	{
+        /* 先写缓冲区中的数据到 SPI 总线，数据写完后，再写 dummy(0xFF) 到 SPI 总线 */
+        if (i < write_size) 
+		{
             send_data = *write_buf++;
-        } else {
+        } 
+		else 
+		{
             send_data = SFUD_DUMMY_DATA;
         }
-        /* �������� */
-        retry_times = 1000;
-        while (SPI_I2S_GetFlagStatus(spi_dev->spix, SPI_I2S_FLAG_TXE) == RESET) {
-            SFUD_RETRY_PROCESS(NULL, retry_times, result);
-        }
-        if (result != SFUD_SUCCESS) {
-            goto exit;
-        }
-        SPI_I2S_SendData(spi_dev->spix, send_data);
-        /* �������� */
-        retry_times = 1000;
-        while (SPI_I2S_GetFlagStatus(spi_dev->spix, SPI_I2S_FLAG_RXNE) == RESET) {
-            SFUD_RETRY_PROCESS(NULL, retry_times, result);
-        }
-        if (result != SFUD_SUCCESS) {
-            goto exit;
-        }
-        read_data = SPI_I2S_ReceiveData(spi_dev->spix);
-        /* д�������е����ݷ�����ٶ�ȡ SPI �����е����ݵ��������� */
-        if (i >= write_size) {
+		
+       if(HAL_SPI_TransmitReceive(spi_dev->hspix, &send_data, &read_data, 1, 1000)!=HAL_OK)
+		{
+            result = SFUD_ERR_TIMEOUT;
+		}
+		
+        if (i >= write_size) 
+		{
             *read_buf++ = read_data;
         }
     }
-
-exit:
-    GPIO_SetBits(spi_dev->cs_gpiox, spi_dev->cs_gpio_pin);
-
+	
+    while (HAL_SPI_GetState(spi_dev->hspix) != HAL_SPI_STATE_READY);
+    HAL_GPIO_WritePin(spi_dev->cs_gpiox,spi_dev->cs_gpio_pin,GPIO_PIN_SET);
+	
+	/**********************************************************************/
+	
     return result;
 }
 
@@ -111,32 +113,42 @@ static void retry_delay_100us(void) {
     while(delay--);
 }
 
-static spi_user_data spi1 = { .spix = SPI1, .cs_gpiox = GPIOC, .cs_gpio_pin = GPIO_Pin_4 };
+static spi_user_data spi5 = { .hspix = &hspi5, .cs_gpiox = GPIOB, .cs_gpio_pin = GPIO_PIN_12 };
 sfud_err sfud_spi_port_init(sfud_flash *flash) {
     sfud_err result = SFUD_SUCCESS;
 
-    switch (flash->index) {
-    case SFUD_SST25_DEVICE_INDEX: {
-        /* RCC ��ʼ�� */
-        rcc_configuration(&spi1);
-        /* GPIO ��ʼ�� */
-        gpio_configuration(&spi1);
-        /* SPI �����ʼ�� */
-        spi_configuration(&spi1);
-        /* ͬ�� Flash ��ֲ����Ľӿڼ����� */
-        flash->spi.wr = spi_write_read;
-        flash->spi.lock = spi_lock;
-        flash->spi.unlock = spi_unlock;
-        flash->spi.user_data = &spi1;
-        /* about 100 microsecond delay */
-        flash->retry.delay = retry_delay_100us;
-        /* adout 60 seconds timeout */
-        flash->retry.times = 60 * 10000;
+    /**
+     * add your port spi bus and device object initialize code like this:
+     * 1. rcc initialize
+     * 2. gpio initialize
+     * 3. spi device initialize
+     * 4. flash->spi and flash->retry item initialize
+     *    flash->spi.wr = spi_write_read; //Required
+     *    flash->spi.qspi_read = qspi_read; //Required when QSPI mode enable
+     *    flash->spi.lock = spi_lock;
+     *    flash->spi.unlock = spi_unlock;
+     *    flash->spi.user_data = &spix;
+     *    flash->retry.delay = null;
+     *    flash->retry.times = 10000; //Required
+     */
+    switch (flash->index) 
+	{
+		 case SFUD_W25Q256FV_DEVICE_INDEX: 
+			 {
+				MX_SPI5_Init();
+				/* 同步 Flash 移植所需的接口及数据 */
+				flash->spi.wr = spi_write_read;
+				flash->spi.lock = spi_lock;
+				flash->spi.unlock = spi_unlock;
+				flash->spi.user_data = &spi5;
+				/* about 100 microsecond delay */
+				flash->retry.delay = retry_delay_100us;
+				/* adout 60 seconds timeout */
+				flash->retry.times = 60 * 10000;
 
-        break;
+				break;
+			}
     }
-    }
-
     return result;
 }
 
