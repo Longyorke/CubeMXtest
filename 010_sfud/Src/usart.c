@@ -21,7 +21,7 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-#include "stdio.h"
+#include "config.h"
 
 /* USER CODE END 0 */
 
@@ -75,6 +75,13 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     HAL_NVIC_SetPriority(USART1_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(USART1_IRQn);
   /* USER CODE BEGIN USART1_MspInit 1 */
+	
+		rt_ringbuffer_init(&usart1_recv_ring_buf,s_USART1_RxBuf,USART1_RX_BUF_SIZE);
+		 /*使能串口接收非空中断 */
+		__HAL_UART_ENABLE_IT(&huart1,UART_IT_RXNE);//该句需要手动开启，cubeMX不会自动生成;
+																						 //若需串口接收回调，请使用HAL_UART_Receive_IT ,使用回调后，中断调用顺序为 USART1_IRQHandler ->HAL_UART_IRQHandler(&huart1)(需在中断处理函数中显示调用)->UART_Receive_IT -> HAL_UART_RxCpltCallback
+		 /*使能串口接收空闲中断 */
+		__HAL_UART_ENABLE_IT(&huart1,UART_IT_IDLE); //该句需要手动开启，cubeMX不会自动生成
 
   /* USER CODE END USART1_MspInit 1 */
   }

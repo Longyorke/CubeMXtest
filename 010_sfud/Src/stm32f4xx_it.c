@@ -23,6 +23,8 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "config.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,6 +54,20 @@
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+//用于存储消息的环形缓冲队列的rt_ringbuffer句柄
+extern struct rt_ringbuffer	msg_ringbuffer;
+
+//开辟一块内存用于存放环形队列消息缓冲区
+#define USART1_RX_BUF_SIZE  256 
+uint8_t s_USART1_RxBuf[USART1_RX_BUF_SIZE];//串口接收缓冲区
+
+//用于存储串口1接收的环形缓冲队列的rt_ringbuffer句柄
+struct rt_ringbuffer usart1_recv_ring_buf;
+
+//存放当前串口接收数据存放的位置
+uint8_t 	s_USART1_RecFrameLen = 0;
+
 
 /* USER CODE END 0 */
 
@@ -222,6 +238,30 @@ void USART1_IRQHandler(void)
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
+	
+	uint8_t receive_char;
+	system_message  sys_msg;
+	
+	if((__HAL_UART_GET_FLAG(&huart1, UART_FLAG_RXNE) != RESET)) //接收非空中断
+    {
+		HAL_UART_Receive(&huart1, &receive_char, 1, 10000);
+		rt_ringbuffer_put(&usart1_recv_ring_buf,&receive_char,1);
+		s_USART1_RecFrameLen++;
+		
+		__HAL_UART_CLEAR_FLAG(&huart1,UART_FLAG_RXNE);
+	}
+	
+	if((__HAL_UART_GET_FLAG(&huart1, UART_FLAG_IDLE) != RESET)) //接收空闲中断,请使用硬件调试，keil软件仿真不支持串口空闲中断。若要软件仿真串口接收，请参考标准库代码
+    {
+		sys_msg.msg_type = MSG_USART1_REC_FINISH;
+		sys_msg.msg_parameter = s_USART1_RecFrameLen;
+		s_USART1_RecFrameLen = 0 ;//数据帧长度复位
+		
+		rt_ringbuffer_put(&msg_ringbuffer,(uint8_t *)&sys_msg.msg_type,2);//发送 串口1接收完成一帧消息(1字节) + 串口1接收帧的长度消息(1字节)
+			
+		__HAL_UART_CLEAR_IDLEFLAG(&huart1);
+	}
+	
 
   /* USER CODE END USART1_IRQn 1 */
 }

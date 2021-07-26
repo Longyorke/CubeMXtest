@@ -29,6 +29,7 @@
 "010_sfud\sfud.o"
 "010_sfud\sfud_sfdp.o"
 "010_sfud\multi_button.o"
+"010_sfud\ringbuffer.o"
 --library_type=microlib --strict --scatter "010_sfud\010_sfud.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

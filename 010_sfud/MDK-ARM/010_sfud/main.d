@@ -48,3 +48,4 @@
 010_sfud\main.o: ..\Package\sfud\inc\sfud_def.h
 010_sfud\main.o: ..\Package\sfud\inc\sfud_cfg.h
 010_sfud\main.o: ..\Package\sfud\inc\sfud_flash_def.h
+010_sfud\main.o: ..\Package\RingBuffer\ringbuffer.h

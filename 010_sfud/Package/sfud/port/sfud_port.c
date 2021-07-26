@@ -64,7 +64,7 @@ static sfud_err spi_write_read(const sfud_spi *spi, const uint8_t *write_buf, si
      * add your spi write and read code
      */
 	/**********************************************************************/
-      spi_user_data_t spi_dev = (spi_user_data_t) spi->user_data;
+  spi_user_data_t spi_dev = (spi_user_data_t) spi->user_data;
 			
 	if (write_size) {
         SFUD_ASSERT(write_buf);
@@ -113,7 +113,7 @@ static void retry_delay_100us(void) {
     while(delay--);
 }
 
-static spi_user_data spi5 = { .hspix = &hspi5, .cs_gpiox = GPIOB, .cs_gpio_pin = GPIO_PIN_12 };
+static spi_user_data spi5 = { .hspix = &hspi5, .cs_gpiox = SPI5_CS_GPIO_Port, .cs_gpio_pin = SPI5_CS_Pin };
 sfud_err sfud_spi_port_init(sfud_flash *flash) {
     sfud_err result = SFUD_SUCCESS;
 

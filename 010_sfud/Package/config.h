@@ -65,6 +65,7 @@ typedef struct
 //外设驱动头文件包含
 //#include "system.h"  //系统相关头文件
 	#include "spi.h"
+	#include "usart.h"
 //#include "bsp_led.h"	
 //#include "bsp_usart.h"
 //#include "bsp_key.h"
@@ -81,6 +82,7 @@ typedef struct
 //#include "ringbuffer.h"
 #include "multi_button.h"
 #include "sfud.h"
+#include "ringbuffer.h"
 
 //----------------------------------------
 //应用相关头文件包含
@@ -89,12 +91,13 @@ typedef struct
 
 //----------------------------------------
 //全局变量定义,请使用EXT修饰
-//EXT unsigned char g_Var;	
-//EXT struct rt_ringbuffer msg_ring_buf;//存储消息的环形队列,在system.c中初始化
+EXT unsigned char g_Var;	
+EXT struct rt_ringbuffer msg_ring_buf;//存储消息的环形队列,在main.c中初始化
+
 
 //----------------------------------------	
 //外部函数调用
-
+EXT void w25qxx_test(void);
 
 
 //----------------------------------------	

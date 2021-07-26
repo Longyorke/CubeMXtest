@@ -39,6 +39,16 @@ extern UART_HandleTypeDef huart1;
 void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+	 
+//开辟一块内存用于存放环形队列消息缓冲区
+#define USART1_RX_BUF_SIZE  256 
+//用于存储串口1接收的环形缓冲队列的rt_ringbuffer句柄
+extern struct rt_ringbuffer usart1_recv_ring_buf;
+
+extern uint8_t  s_USART1_RxBuf[USART1_RX_BUF_SIZE];//串口接收缓冲区
+
+//用于存储串口1接收的环形缓冲队列的rt_ringbuffer句柄
+extern struct rt_ringbuffer usart1_recv_ring_buf;
 
 /* USER CODE END Prototypes */
 

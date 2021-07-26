@@ -60,6 +60,43 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+
+//开辟一块内存用于存放环形队列消息缓冲区
+#define MSG_BUFFDATA_SIZE	128
+static uint8_t msg_buffdata[MSG_BUFFDATA_SIZE];
+
+//用于存储消息的环形缓冲队列的rt_ringbuffer句柄
+struct rt_ringbuffer	msg_ringbuffer;
+
+//系统消息处理
+static uint8_t message_buff[256];
+void msg_process(void)  
+{
+	system_message sys_msg;
+	
+	if(rt_ringbuffer_data_len(&msg_ringbuffer)!= 0) //消息队列不为空，则有消息需要处理
+	{
+		rt_ringbuffer_get(&msg_ringbuffer,(uint8_t *) &sys_msg.msg_type, 2);//读取消息类型(1字节) + 消息参数(1字节)，其中：不同消息类型对应的消息参数意义也不同，由用户自行定义
+
+	    
+		switch(sys_msg.msg_type)
+		{
+			case MSG_USART1_REC_FINISH:
+				rt_ringbuffer_get(&usart1_recv_ring_buf, message_buff, sys_msg.msg_parameter);
+			    message_buff[sys_msg.msg_parameter] = '\0';//sys_msg.msg_parameter中存放的是串口1接收帧的长度信息
+			    printf("%s\n",message_buff);
+				break;
+			
+			case MSG_W25QXX_TEST:
+				w25qxx_test();
+				break;
+			
+			default:break;
+		}
+	}
+}
+
+
 //申请一个按键结构
 struct Button button1;
 
@@ -72,6 +109,9 @@ uint8_t read_button1_GPIO()
 //按键回调函数
 void button1_callback(void *button)
 {
+		//系统消息
+		system_message  sys_msg;
+		
     uint32_t btn_event_val; 
     
     btn_event_val = get_button_event((struct Button *)button); 
@@ -94,9 +134,12 @@ void button1_callback(void *button)
 	        printf("---> key1 single click! <---\r\n");
 	    	break; 
 	
-	    case DOUBLE_CLICK: 
-	        printf("***> key1 double click! <***\r\n");
-	    	break; 
+			case DOUBLE_CLICK://send msg MSG_W25QXX_TEST,in order to test w25q64 example
+				sys_msg.msg_type = MSG_W25QXX_TEST;
+				sys_msg.msg_parameter = 0;
+				rt_ringbuffer_put(&msg_ringbuffer,(uint8_t *)&sys_msg.msg_type,2);
+					printf("---> key1 double click! <---\r\n");
+				break;
 	
 	    case LONG_PRESS_START: 
 	        printf("---> key1 long press start! <---\r\n");
@@ -117,6 +160,33 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		}
 
 }
+
+/*****************************w25qxx example****************************************/
+char w25qxx_test_string[6][128]={
+	"***************************Copyright (c)***************************",
+	"**----------------------Hello World !!! -------------------------**",
+	"** Thanks to armink:https://github.com/armink/SFUD               **",
+	"** reference:                                                    **",
+	"** https://mculover666.blog.csdn.net/article/details/105516371   **",
+	"*******************************************************************"
+};
+//w25qxx_test测试
+void w25qxx_test(void)
+{
+	int i;
+	char sBuff[256]={0};
+//	sfud_err result = SFUD_SUCCESS;
+    const sfud_flash *flash = sfud_get_device_table() + 0;
+	
+	for(i=0;i<6;i++)
+	{
+		sfud_erase_write(flash, 0, strlen(w25qxx_test_string[i]),(uint8_t *)w25qxx_test_string[i]);
+	    sfud_read(flash, 0, strlen(w25qxx_test_string[i]),(uint8_t *) sBuff);
+	    printf("%s\n",sBuff);	
+	}
+
+}
+
 
 /* USER CODE END 0 */
 
@@ -153,8 +223,16 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 	
-	printf("MultiButton+SFUD Test...\r\n");
-
+	printf("MultiButton+RingBuffer+SFUD Test...\r\n");
+	
+	//初始化消息环形队列
+	rt_ringbuffer_init(&msg_ringbuffer, msg_buffdata, MSG_BUFFDATA_SIZE);
+  HAL_Delay(1);
+	
+	//初始化sfud
+	sfud_init();
+	HAL_Delay(1);
+	
 	//初始化按键对象
 	button_init(&button1, read_button1_GPIO, 0);
 	
@@ -173,6 +251,9 @@ int main(void)
 	
 	//启动定时器
 	HAL_TIM_Base_Start_IT(&htim2);
+	
+	
+
 
   /* USER CODE END 2 */
 
@@ -181,7 +262,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+//		HAL_Delay(200);
+		msg_process();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

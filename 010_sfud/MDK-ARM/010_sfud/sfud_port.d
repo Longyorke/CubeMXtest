@@ -44,4 +44,6 @@
 010_sfud\sfud_port.o: D:\software\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 010_sfud\sfud_port.o: ../Inc/spi.h
 010_sfud\sfud_port.o: ../Inc/main.h
+010_sfud\sfud_port.o: ../Inc/usart.h
 010_sfud\sfud_port.o: ..\Package\multi_button\multi_button.h
+010_sfud\sfud_port.o: ..\Package\RingBuffer\ringbuffer.h
