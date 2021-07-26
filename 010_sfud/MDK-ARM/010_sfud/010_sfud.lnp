@@ -3,6 +3,7 @@
 "010_sfud\main.o"
 "010_sfud\gpio.o"
 "010_sfud\spi.o"
+"010_sfud\tim.o"
 "010_sfud\usart.o"
 "010_sfud\stm32f4xx_it.o"
 "010_sfud\stm32f4xx_hal_msp.o"
