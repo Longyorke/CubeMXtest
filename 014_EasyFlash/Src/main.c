@@ -100,16 +100,46 @@ void msg_process(void)
 }
 
 
-//申请一个按键结构
+//申请三个按键结构
+struct Button button0;
 struct Button button1;
+struct Button button2;
 
-//按键状态读取接口
+//三个按键状态读取接口
+uint8_t read_button0_GPIO() 
+{
+	return HAL_GPIO_ReadPin(KEY0_GPIO_Port, KEY0_Pin);
+}
 uint8_t read_button1_GPIO() 
 {
 	return HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin);
 }
+uint8_t read_button2_GPIO() 
+{
+	return HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin);
+}
 
 //按键回调函数
+void button0_callback(void *button)
+{
+		//系统消息
+		system_message  sys_msg;
+		
+    uint32_t btn_event_val; 
+    
+    btn_event_val = get_button_event((struct Button *)button); 
+    
+    switch(btn_event_val)
+    {
+	    case SINGLE_CLICK:
+	        printf("---> key0 single click! <---\r\n");
+	    	break; 
+	
+			case DOUBLE_CLICK:
+					printf("---> key0 double click! <---\r\n");
+				break;
+	}
+}
 void button1_callback(void *button)
 {
 		//系统消息
@@ -154,6 +184,26 @@ void button1_callback(void *button)
 	    case LONG_PRESS_HOLD: 
 	        printf("***> key1 long press hold! <***\r\n");
 	    	break; 
+	}
+}
+void button2_callback(void *button)
+{
+		//系统消息
+		system_message  sys_msg;
+		
+    uint32_t btn_event_val; 
+    
+    btn_event_val = get_button_event((struct Button *)button); 
+    
+    switch(btn_event_val)
+    {
+	    case SINGLE_CLICK:
+	        printf("---> key2 single click! <---\r\n");
+	    	break; 
+	
+			case DOUBLE_CLICK:
+					printf("---> key2 double click! <---\r\n");
+				break;
 	}
 }
 
@@ -277,11 +327,17 @@ int main(void)
 	printf("EasyFlash init fail, EfErrCode = %d.r\n", ret);
 }
 	
-	//初始化按键对象
+	//初始化三个按键对象
+	button_init(&button0, read_button0_GPIO, 0);
 	button_init(&button1, read_button1_GPIO, 0);
+	button_init(&button2, read_button2_GPIO, 0);
 	
 	//注册按钮事件回调函数
+	//按键0
+	button_attach(&button0, SINGLE_CLICK,     button0_callback);
+	button_attach(&button0, DOUBLE_CLICK,     button0_callback);
 
+	//按键1
 //	button_attach(&button1, PRESS_DOWN,       button1_callback);
 //	button_attach(&button1, PRESS_UP,         button1_callback);
 //	button_attach(&button1, PRESS_REPEAT,     button1_callback);
@@ -290,8 +346,14 @@ int main(void)
 //	button_attach(&button1, LONG_PRESS_START, button1_callback);
 //	button_attach(&button1, LONG_PRESS_HOLD,  button1_callback);
 
+	//按键2
+	button_attach(&button2, SINGLE_CLICK,     button2_callback);
+	button_attach(&button2, DOUBLE_CLICK,     button2_callback);
+
 	//启动按键
+	button_start(&button0);
 	button_start(&button1);
+	button_start(&button2);
 	
 	//启动定时器
 	HAL_TIM_Base_Start_IT(&htim2);

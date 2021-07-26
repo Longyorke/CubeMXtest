@@ -22,16 +22,21 @@ Dialog DLL:      TCM.DLL V1.42.0.0
  
 <h2>Project:</h2>
 D:\GithubProject\CubeMXtest\014_EasyFlash\MDK-ARM\014_EasyFlash.uvprojx
-Project File Date:  07/26/2021
+Project File Date:  07/27/2021
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\software\Keil_v5\ARM\ARMCC\Bin'
 Build target '014_EasyFlash'
 compiling main.c...
+../Src/main.c(126): warning:  #177-D: variable "sys_msg"  was declared but never referenced
+  		system_message  sys_msg;
+../Src/main.c(192): warning:  #177-D: variable "sys_msg"  was declared but never referenced
+  		system_message  sys_msg;
+../Src/main.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=27740 RO-data=4740 RW-data=944 ZI-data=2968  
+Program Size: Code=28084 RO-data=4740 RW-data=944 ZI-data=3048  
 FromELF: creating hex file...
-"014_EasyFlash\014_EasyFlash.axf" - 0 Error(s), 0 Warning(s).
+"014_EasyFlash\014_EasyFlash.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -54,7 +59,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.4.0
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>
