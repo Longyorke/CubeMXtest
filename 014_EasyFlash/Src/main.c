@@ -91,6 +91,9 @@ void msg_process(void)
 				w25qxx_test();
 				break;
 			
+			case MSG_EASYFLASH_TEST:
+				test_env();
+				break;
 			default:break;
 		}
 	}
@@ -130,14 +133,17 @@ void button1_callback(void *button)
 	        printf("---> key1 press repeat! <---\r\n");
 	    	break; 
 	
-	    case SINGLE_CLICK: 
+	    case SINGLE_CLICK: //send msg MSG_W25QXX_TEST,in order to test w25q64 example
+					sys_msg.msg_type = MSG_W25QXX_TEST;
+					sys_msg.msg_parameter = 0;
+					rt_ringbuffer_put(&msg_ringbuffer,(uint8_t *)&sys_msg.msg_type,2);
 	        printf("---> key1 single click! <---\r\n");
 	    	break; 
 	
-			case DOUBLE_CLICK://send msg MSG_W25QXX_TEST,in order to test w25q64 example
-				sys_msg.msg_type = MSG_W25QXX_TEST;
-				sys_msg.msg_parameter = 0;
-				rt_ringbuffer_put(&msg_ringbuffer,(uint8_t *)&sys_msg.msg_type,2);
+			case DOUBLE_CLICK://send msg MSG_EASYFLASH_TEST,in order to test EASYFLASH example
+					sys_msg.msg_type = MSG_EASYFLASH_TEST;
+					sys_msg.msg_parameter = 0;
+					rt_ringbuffer_put(&msg_ringbuffer,(uint8_t *)&sys_msg.msg_type,2);
 					printf("---> key1 double click! <---\r\n");
 				break;
 	
@@ -184,8 +190,39 @@ void w25qxx_test(void)
 	    sfud_read(flash, 0, strlen(w25qxx_test_string[i]),(uint8_t *) sBuff);
 	    printf("%s\n",sBuff);	
 	}
+}
+
+//初始化easyflash函数返回值，用于判断是否初始化成功
+unsigned char ret = 0;
+
+//编写一个EasyFlash测试函数
+void test_env(void)
+{
+	char wifi_ssid[20] = {0};
+	char wifi_passwd[20] = {0};
+	size_t len = 0;
+	
+	/* 读取默认环境变量值 */
+	//环境变量长度未知，先获取 Flash 上存储的实际长度 */
+	ef_get_env_blob("wifi_ssid", NULL, 0, &len);
+	//获取环境变量
+	ef_get_env_blob("wifi_ssid", wifi_ssid, len, NULL);
+	//打印获取的环境变量值
+	printf("wifi_ssid env is:%s\r\n", wifi_ssid);
+	
+	//环境变量长度未知，先获取 Flash 上存储的实际长度 */
+	ef_get_env_blob("wifi_passwd", NULL, 0, &len);
+	//获取环境变量
+	ef_get_env_blob("wifi_passwd", wifi_passwd, len, NULL);
+	//打印获取的环境变量值
+	printf("wifi_passwd env is:%s\r\n", wifi_passwd);
+	
+	/* 将环境变量值改变 */
+	ef_set_env_blob("wifi_ssid", "SSID_TEST", 9);
+	ef_set_env_blob("wifi_passwd", "66666666", 8);
 
 }
+
 
 
 /* USER CODE END 0 */
@@ -223,15 +260,22 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 	
-	printf("MultiButton+RingBuffer+SFUD Test...\r\n");
+	printf("MultiButton+RingBuffer+SFUD+EasyFlash Test...\r\n");
 	
 	//初始化消息环形队列
 	rt_ringbuffer_init(&msg_ringbuffer, msg_buffdata, MSG_BUFFDATA_SIZE);
   HAL_Delay(1);
 	
 	//初始化sfud
-	sfud_init();
+//	sfud_init();
+
+	//初始化easyflash
+	easyflash_init();
 	HAL_Delay(1);
+	if(ret != EF_NO_ERR)
+{
+	printf("EasyFlash init fail, EfErrCode = %d.r\n", ret);
+}
 	
 	//初始化按键对象
 	button_init(&button1, read_button1_GPIO, 0);

@@ -48,3 +48,6 @@
 014_easyflash\stm32f4xx_it.o: ..\Package\sfud\inc\sfud_cfg.h
 014_easyflash\stm32f4xx_it.o: ..\Package\sfud\inc\sfud_flash_def.h
 014_easyflash\stm32f4xx_it.o: ..\Package\RingBuffer\ringbuffer.h
+014_easyflash\stm32f4xx_it.o: ..\Package\easyflash\inc\easyflash.h
+014_easyflash\stm32f4xx_it.o: ..\Package\easyflash\inc\ef_cfg.h
+014_easyflash\stm32f4xx_it.o: ..\Package\easyflash\inc\ef_def.h

@@ -24,7 +24,7 @@ typedef enum //定义消息枚举类型
 //	MSG_KEY2_PRESS,
 //	MSG_AT24CXX_TEST,
 	MSG_W25QXX_TEST,
-	
+	MSG_EASYFLASH_TEST,
 	MSG_USART1_REC_FINISH,//串口1接收到一帧数据消息
 	/******************************/
 	MSG_NUM
@@ -79,10 +79,10 @@ typedef struct
 
 //软件包头文件包含
 //#include "multi_timer.h"
-//#include "ringbuffer.h"
 #include "multi_button.h"
 #include "sfud.h"
 #include "ringbuffer.h"
+#include "easyflash.h"
 
 //----------------------------------------
 //应用相关头文件包含
@@ -92,12 +92,14 @@ typedef struct
 //----------------------------------------
 //全局变量定义,请使用EXT修饰
 EXT unsigned char g_Var;	
+
 EXT struct rt_ringbuffer msg_ring_buf;//存储消息的环形队列,在main.c中初始化
 
 
 //----------------------------------------	
 //外部函数调用
 EXT void w25qxx_test(void);
+EXT void test_env(void);
 
 
 //----------------------------------------	

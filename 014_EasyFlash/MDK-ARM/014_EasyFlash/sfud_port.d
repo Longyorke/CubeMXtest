@@ -47,3 +47,6 @@
 014_easyflash\sfud_port.o: ../Inc/usart.h
 014_easyflash\sfud_port.o: ..\Package\multi_button\multi_button.h
 014_easyflash\sfud_port.o: ..\Package\RingBuffer\ringbuffer.h
+014_easyflash\sfud_port.o: ..\Package\easyflash\inc\easyflash.h
+014_easyflash\sfud_port.o: ..\Package\easyflash\inc\ef_cfg.h
+014_easyflash\sfud_port.o: ..\Package\easyflash\inc\ef_def.h

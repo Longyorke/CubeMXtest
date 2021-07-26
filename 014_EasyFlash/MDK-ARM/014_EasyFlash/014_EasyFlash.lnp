@@ -30,6 +30,10 @@
 "014_easyflash\sfud_sfdp.o"
 "014_easyflash\multi_button.o"
 "014_easyflash\ringbuffer.o"
+"014_easyflash\ef_port.o"
+"014_easyflash\easyflash.o"
+"014_easyflash\ef_env.o"
+"014_easyflash\ef_utils.o"
 --library_type=microlib --strict --scatter "014_EasyFlash\014_EasyFlash.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

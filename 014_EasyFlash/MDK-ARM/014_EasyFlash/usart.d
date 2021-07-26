@@ -47,3 +47,6 @@
 014_easyflash\usart.o: ..\Package\sfud\inc\sfud_cfg.h
 014_easyflash\usart.o: ..\Package\sfud\inc\sfud_flash_def.h
 014_easyflash\usart.o: ..\Package\RingBuffer\ringbuffer.h
+014_easyflash\usart.o: ..\Package\easyflash\inc\easyflash.h
+014_easyflash\usart.o: ..\Package\easyflash\inc\ef_cfg.h
+014_easyflash\usart.o: ..\Package\easyflash\inc\ef_def.h
