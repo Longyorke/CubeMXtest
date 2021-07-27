@@ -51,3 +51,7 @@
 014_easyflash\stm32f4xx_it.o: ..\Package\easyflash\inc\easyflash.h
 014_easyflash\stm32f4xx_it.o: ..\Package\easyflash\inc\ef_cfg.h
 014_easyflash\stm32f4xx_it.o: ..\Package\easyflash\inc\ef_def.h
+014_easyflash\stm32f4xx_it.o: ..\Drivers\IIC\iic.h
+014_easyflash\stm32f4xx_it.o: ../Inc/gpio.h
+014_easyflash\stm32f4xx_it.o: ..\Drivers\FDC2214\fdc2214.h
+014_easyflash\stm32f4xx_it.o: ..\Drivers\FDC2214\DataType.h

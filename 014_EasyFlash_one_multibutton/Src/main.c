@@ -63,7 +63,6 @@ void SystemClock_Config(void);
 //串口屏发送的校准  纸张数
 int HMI_Page_Number = 0;
 
-
 //开辟一块内存用于存放环形队列消息缓冲区
 #define MSG_BUFFDATA_SIZE	128
 static uint8_t msg_buffdata[MSG_BUFFDATA_SIZE];
@@ -95,7 +94,7 @@ void msg_process(void)
 				else//sys_msg.msg_parameter中存放的是串口1接收帧的长度信息不为纸张帧数帧，即非两位数字
 				{
 				  message_buff[sys_msg.msg_parameter] = '\0';//sys_msg.msg_parameter中存放的是串口1接收帧的长度信息
-			    printf("非输入纸张数量：%s\n",message_buff);
+			    printf("非输入合适的纸张数量：%s\n",message_buff);
 				}
 				break;
 			
@@ -171,14 +170,23 @@ void button0_callback(void *button)
 	}
 }
 
+//存放FDC2214_Channel_3,也就是通道4的数据
+static unsigned int res_CH4_DATA = 0;
 
 //TIM回调
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-		if(htim->Instance == htim2.Instance)
-		{
-			button_ticks();
-		}
+	//处理TIM2定时中断，进行按键处理 5ms
+	if(htim->Instance == htim2.Instance)
+	{
+		button_ticks();
+	}
+	//处理TIM3定时中断，进行FDC检测 500ms
+		if(htim->Instance == htim3.Instance)
+	{
+		FDC2214_GetChannelData(FDC2214_Channel_3, &res_CH4_DATA);//读FDC2214_Channel_3,也就是通道4，放到res_CH4_DATA中
+		printf("CH3=%d\n",res_CH4_DATA);
+	}
 
 }
 
@@ -239,7 +247,6 @@ void test_env(void)
 }
 
 
-
 /* USER CODE END 0 */
 
 /**
@@ -273,20 +280,30 @@ int main(void)
   MX_SPI5_Init();
   MX_USART1_UART_Init();
   MX_TIM2_Init();
+  MX_TIM3_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
 	
-	printf("MultiButton+RingBuffer+SFUD+EasyFlash Test...\r\n");
+	printf("MultiButton+RingBuffer+SFUD+EasyFlash+fdc Test...\r\n");
+	
+	//初始化消息环形队列
+	IIC_Init();
+  HAL_Delay_us(5);
+	
+	//初始化消息环形队列	
+	FDC2214_Init();
+	HAL_Delay_us(5);
 	
 	//初始化消息环形队列
 	rt_ringbuffer_init(&msg_ringbuffer, msg_buffdata, MSG_BUFFDATA_SIZE);
-  HAL_Delay(1);
+  HAL_Delay_us(5);
 	
 	//初始化sfud
 //	sfud_init();
 
 	//初始化easyflash
 	easyflash_init();
-	HAL_Delay(1);
+	HAL_Delay_us(5);
 	if(ret != EF_NO_ERR)
 {
 	printf("EasyFlash init fail, EfErrCode = %d.r\n", ret);
@@ -297,7 +314,6 @@ int main(void)
 
 	
 	//注册按钮事件回调函数
-
 	//按键0
 //	button_attach(&button0, PRESS_DOWN,       button1_callback);
 //	button_attach(&button0, PRESS_UP,         button1_callback);
@@ -315,7 +331,7 @@ int main(void)
 	
 	//启动定时器
 	HAL_TIM_Base_Start_IT(&htim2);
-	
+	HAL_TIM_Base_Start_IT(&htim3);
 	
 
 
@@ -327,6 +343,7 @@ int main(void)
   {
 		//		HAL_Delay(200);
 		msg_process();
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -383,6 +400,24 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_Delay_us(uint16_t us)
+{
+	uint16_t differ=0xffff-us-5;					//设定定时器计数器起始值
+
+	__HAL_TIM_SET_COUNTER(&htim6,differ);
+
+	HAL_TIM_Base_Start(&htim6);					//启动定时器
+
+ while(differ<0xffff-6)							//补偿，判断
+ {
+
+  differ=__HAL_TIM_GET_COUNTER(&htim6);			//查询计数器的计数值
+
+ }
+
+ HAL_TIM_Base_Stop(&htim6);
+
+}
 
 /* USER CODE END 4 */
 

@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F429xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32F4xx/Include; ../Drivers/CMSIS/Include; ..\Package; ..\Package\multi_button; ..\Package\RingBuffer; ..\Package\sfud\inc; ..\Package\easyflash\inc</IncludePath>
+              <IncludePath>../Inc;   ../Drivers/STM32F4xx_HAL_Driver/Inc;   ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;   ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;   ../Drivers/CMSIS/Include;   ..\Package;   ..\Package\multi_button;   ..\Package\RingBuffer;   ..\Package\sfud\inc;   ..\Package\easyflash\inc;   ..\Drivers\IIC;   ..\Drivers\FDC2214</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -592,6 +592,21 @@
               <FileName>ef_utils.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Package\easyflash\src\ef_utils.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Drivers</GroupName>
+          <Files>
+            <File>
+              <FileName>iic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\IIC\iic.c</FilePath>
+            </File>
+            <File>
+              <FileName>FDC2214.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\FDC2214\FDC2214.c</FilePath>
             </File>
           </Files>
         </Group>

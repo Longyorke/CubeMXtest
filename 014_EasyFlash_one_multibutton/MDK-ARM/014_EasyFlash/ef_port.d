@@ -50,3 +50,7 @@
 014_easyflash\ef_port.o: ..\Package\sfud\inc\sfud_cfg.h
 014_easyflash\ef_port.o: ..\Package\sfud\inc\sfud_flash_def.h
 014_easyflash\ef_port.o: ..\Package\RingBuffer\ringbuffer.h
+014_easyflash\ef_port.o: ..\Drivers\IIC\iic.h
+014_easyflash\ef_port.o: ../Inc/gpio.h
+014_easyflash\ef_port.o: ..\Drivers\FDC2214\fdc2214.h
+014_easyflash\ef_port.o: ..\Drivers\FDC2214\DataType.h

@@ -52,3 +52,6 @@
 014_easyflash\main.o: ..\Package\easyflash\inc\easyflash.h
 014_easyflash\main.o: ..\Package\easyflash\inc\ef_cfg.h
 014_easyflash\main.o: ..\Package\easyflash\inc\ef_def.h
+014_easyflash\main.o: ..\Drivers\IIC\iic.h
+014_easyflash\main.o: ..\Drivers\FDC2214\fdc2214.h
+014_easyflash\main.o: ..\Drivers\FDC2214\DataType.h
