@@ -55,3 +55,6 @@
 014_easyflash\main.o: ..\Drivers\IIC\iic.h
 014_easyflash\main.o: ..\Drivers\FDC2214\fdc2214.h
 014_easyflash\main.o: ..\Drivers\FDC2214\DataType.h
+014_easyflash\main.o: ..\User\operatingfdc\operatingfdc.h
+014_easyflash\main.o: ..\Package\config.h
+014_easyflash\main.o: ..\User\operatingflash\operatingflash.h

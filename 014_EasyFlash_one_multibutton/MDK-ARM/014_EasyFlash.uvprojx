@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F429xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;   ../Drivers/STM32F4xx_HAL_Driver/Inc;   ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;   ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;   ../Drivers/CMSIS/Include;   ..\Package;   ..\Package\multi_button;   ..\Package\RingBuffer;   ..\Package\sfud\inc;   ..\Package\easyflash\inc;   ..\Drivers\IIC;   ..\Drivers\FDC2214</IncludePath>
+              <IncludePath>../Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32F4xx/Include; ../Drivers/CMSIS/Include; ..\Package; ..\Package\multi_button; ..\Package\RingBuffer; ..\Package\sfud\inc; ..\Package\easyflash\inc; ..\Drivers\IIC; ..\Drivers\FDC2214; ..\User\operatingfdc; ..\User\operatingflash</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -393,6 +393,16 @@
         <Group>
           <GroupName>Application/User</GroupName>
           <Files>
+            <File>
+              <FileName>operatingfdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\operatingfdc\operatingfdc.c</FilePath>
+            </File>
+            <File>
+              <FileName>operatingflash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\operatingflash\operatingflash.c</FilePath>
+            </File>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>

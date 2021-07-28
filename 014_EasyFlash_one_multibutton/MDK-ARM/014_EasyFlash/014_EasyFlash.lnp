@@ -1,5 +1,7 @@
 --cpu=Cortex-M4.fp.sp
 "014_easyflash\startup_stm32f429xx.o"
+"014_easyflash\operatingfdc.o"
+"014_easyflash\operatingflash.o"
 "014_easyflash\main.o"
 "014_easyflash\gpio.o"
 "014_easyflash\spi.o"

@@ -98,12 +98,12 @@ void msg_process(void)
 				}
 				break;
 			
-			case MSG_W25QXX_TEST:
-				w25qxx_test();
+			case MSG_FDC2214_Data_Adjust:
+				FDC2214_Data_Adjust();
 				break;
 			
-			case MSG_EASYFLASH_TEST:
-				test_env();
+			case MSG_Capcity_Paper_Detection:
+				Capcity_Paper_Detection();
 				break;
 			default:break;
 		}
@@ -135,43 +135,44 @@ void button0_callback(void *button)
     switch(btn_event_val)
     {
 	    case PRESS_DOWN:
-	        printf("---> key1 press down! <---\r\n"); 
+	        printf("---> key0 press down! <---\r\n"); 
 	    	break; 
 	
 	    case PRESS_UP: 
-	        printf("***> key1 press up! <***\r\n");
+	        printf("***> key0 press up! <***\r\n");
 	    	break; 
 	
 	    case PRESS_REPEAT: 
-	        printf("---> key1 press repeat! <---\r\n");
+	        printf("---> key0 press repeat! <---\r\n");
 	    	break; 
 	
 	    case SINGLE_CLICK: //send msg MSG_W25QXX_TEST,in order to test w25q64 example
-					sys_msg.msg_type = MSG_W25QXX_TEST;
+//					sys_msg.msg_type = MSG_W25QXX_TEST;
+					sys_msg.msg_type = MSG_FDC2214_Data_Adjust;
 					sys_msg.msg_parameter = 0;
 					rt_ringbuffer_put(&msg_ringbuffer,(uint8_t *)&sys_msg.msg_type,2);
-	        printf("---> key1 single click! <---\r\n");
+	        printf("---> key0 single click! <---\r\n");
 	    	break; 
 	
 			case DOUBLE_CLICK://send msg MSG_EASYFLASH_TEST,in order to test EASYFLASH example
-					sys_msg.msg_type = MSG_EASYFLASH_TEST;
+//					sys_msg.msg_type = MSG_EASYFLASH_TEST;
+					sys_msg.msg_type = MSG_Capcity_Paper_Detection;
 					sys_msg.msg_parameter = 0;
 					rt_ringbuffer_put(&msg_ringbuffer,(uint8_t *)&sys_msg.msg_type,2);
-					printf("---> key1 double click! <---\r\n");
+					printf("---> key0 double click! <---\r\n");
 				break;
 	
 	    case LONG_PRESS_START: 
-	        printf("---> key1 long press start! <---\r\n");
+	        printf("---> key0 long press start! <---\r\n");
 	   		break; 
 	
 	    case LONG_PRESS_HOLD: 
-	        printf("***> key1 long press hold! <***\r\n");
+	        printf("***> key0 long press hold! <***\r\n");
 	    	break; 
 	}
 }
 
-//存放FDC2214_Channel_3,也就是通道4的数据
-static unsigned int res_CH4_DATA = 0;
+
 
 //TIM回调
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
@@ -180,12 +181,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance == htim2.Instance)
 	{
 		button_ticks();
-	}
-	//处理TIM3定时中断，进行FDC检测 500ms
-		if(htim->Instance == htim3.Instance)
-	{
-		FDC2214_GetChannelData(FDC2214_Channel_3, &res_CH4_DATA);//读FDC2214_Channel_3,也就是通道4，放到res_CH4_DATA中
-		printf("CH3=%d\n",res_CH4_DATA);
 	}
 
 }
@@ -200,51 +195,54 @@ char w25qxx_test_string[6][128]={
 	"*******************************************************************"
 };
 //w25qxx_test测试
-void w25qxx_test(void)
-{
-	int i;
-	char sBuff[256]={0};
-//	sfud_err result = SFUD_SUCCESS;
-    const sfud_flash *flash = sfud_get_device_table() + 0;
-	
-	for(i=0;i<6;i++)
-	{
-		sfud_erase_write(flash, 0, strlen(w25qxx_test_string[i]),(uint8_t *)w25qxx_test_string[i]);
-	    sfud_read(flash, 0, strlen(w25qxx_test_string[i]),(uint8_t *) sBuff);
-	    printf("%s\n",sBuff);	
-	}
-}
+//void w25qxx_test(void)
+//{
+//	int i;
+//	char sBuff[256]={0};
+////	sfud_err result = SFUD_SUCCESS;
+//    const sfud_flash *flash = sfud_get_device_table() + 0;
+//	
+//	for(i=0;i<6;i++)
+//	{
+//		sfud_erase_write(flash, 0, strlen(w25qxx_test_string[i]),(uint8_t *)w25qxx_test_string[i]);
+//	    sfud_read(flash, 0, strlen(w25qxx_test_string[i]),(uint8_t *) sBuff);
+//	    printf("%s\n",sBuff);	
+//	}
+//}
 
 //初始化easyflash函数返回值，用于判断是否初始化成功
 unsigned char ret = 0;
 
 //编写一个EasyFlash测试函数
-void test_env(void)
-{
-	char wifi_ssid[20] = {0};
-	char wifi_passwd[20] = {0};
-	size_t len = 0;
-	
-	/* 读取默认环境变量值 */
-	//环境变量长度未知，先获取 Flash 上存储的实际长度 */
-	ef_get_env_blob("wifi_ssid", NULL, 0, &len);
-	//获取环境变量
-	ef_get_env_blob("wifi_ssid", wifi_ssid, len, NULL);
-	//打印获取的环境变量值
-	printf("wifi_ssid env is:%s\r\n", wifi_ssid);
-	
-	//环境变量长度未知，先获取 Flash 上存储的实际长度 */
-	ef_get_env_blob("wifi_passwd", NULL, 0, &len);
-	//获取环境变量
-	ef_get_env_blob("wifi_passwd", wifi_passwd, len, NULL);
-	//打印获取的环境变量值
-	printf("wifi_passwd env is:%s\r\n", wifi_passwd);
-	
-	/* 将环境变量值改变 */
-	ef_set_env_blob("wifi_ssid", "SSID_TEST", 9);
-	ef_set_env_blob("wifi_passwd", "66666666", 8);
+//void test_env(void)
+//{
+//	char wifi_ssid[20] = {0};
+//	char wifi_passwd[20] = {0};
+//	size_t len = 0;
+//	
+//	/* 读取默认环境变量值 */
+//	//环境变量长度未知，先获取 Flash 上存储的实际长度 */
+//	ef_get_env_blob("wifi_ssid", NULL, 0, &len);
+//	//获取环境变量
+//	ef_get_env_blob("wifi_ssid", wifi_ssid, len, NULL);
+//	//打印获取的环境变量值
+//	printf("wifi_ssid env is:%s\r\n", wifi_ssid);
+//	
+//	//环境变量长度未知，先获取 Flash 上存储的实际长度 */
+//	ef_get_env_blob("wifi_passwd", NULL, 0, &len);
+//	//获取环境变量
+//	ef_get_env_blob("wifi_passwd", wifi_passwd, len, NULL);
+//	//打印获取的环境变量值
+//	printf("wifi_passwd env is:%s\r\n", wifi_passwd);
+//	
+//	/* 将环境变量值改变 */
+//	ef_set_env_blob("wifi_ssid", "SSID_TEST", 9);
+//	ef_set_env_blob("wifi_passwd", "66666666", 8);
 
-}
+//}
+
+
+
 
 
 /* USER CODE END 0 */
@@ -280,7 +278,6 @@ int main(void)
   MX_SPI5_Init();
   MX_USART1_UART_Init();
   MX_TIM2_Init();
-  MX_TIM3_Init();
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
 	
@@ -331,8 +328,9 @@ int main(void)
 	
 	//启动定时器
 	HAL_TIM_Base_Start_IT(&htim2);
-	HAL_TIM_Base_Start_IT(&htim3);
 	
+	//读取Flash中的数据，分割好 电容区间
+	DataSubsection(Cap_Division,FDC2214_Data_In_Flash);
 
 
   /* USER CODE END 2 */

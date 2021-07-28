@@ -54,3 +54,6 @@
 014_easyflash\sfud_port.o: ../Inc/gpio.h
 014_easyflash\sfud_port.o: ..\Drivers\FDC2214\fdc2214.h
 014_easyflash\sfud_port.o: ..\Drivers\FDC2214\DataType.h
+014_easyflash\sfud_port.o: ..\User\operatingfdc\operatingfdc.h
+014_easyflash\sfud_port.o: ..\Package\config.h
+014_easyflash\sfud_port.o: ..\User\operatingflash\operatingflash.h

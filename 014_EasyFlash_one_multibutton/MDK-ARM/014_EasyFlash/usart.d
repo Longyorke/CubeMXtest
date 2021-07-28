@@ -54,3 +54,6 @@
 014_easyflash\usart.o: ../Inc/gpio.h
 014_easyflash\usart.o: ..\Drivers\FDC2214\fdc2214.h
 014_easyflash\usart.o: ..\Drivers\FDC2214\DataType.h
+014_easyflash\usart.o: ..\User\operatingfdc\operatingfdc.h
+014_easyflash\usart.o: ..\Package\config.h
+014_easyflash\usart.o: ..\User\operatingflash\operatingflash.h

@@ -9,6 +9,7 @@
 
 //全局宏定义
 
+
 //----------------------------------------
 
 
@@ -23,8 +24,10 @@ typedef enum //定义消息枚举类型
 //	MSG_KEY1_PRESS,
 //	MSG_KEY2_PRESS,
 //	MSG_AT24CXX_TEST,
-	MSG_W25QXX_TEST,
-	MSG_EASYFLASH_TEST,
+//	MSG_W25QXX_TEST,
+//	MSG_EASYFLASH_TEST,
+	MSG_FDC2214_Data_Adjust,
+	MSG_Capcity_Paper_Detection,
 	MSG_USART1_REC_FINISH,//串口1接收到一帧数据消息
 	/******************************/
 	MSG_NUM
@@ -89,12 +92,14 @@ typedef struct
 //----------------------------------------
 //应用相关头文件包含
 //#include "task.h"
+#include "operatingfdc.h"
+#include "operatingflash.h"
 
 
 //----------------------------------------
 //全局变量定义,请使用EXT修饰
 EXT unsigned char g_Var;	
-
+EXT int HMI_Page_Number;
 EXT struct rt_ringbuffer msg_ring_buf;//存储消息的环形队列,在main.c中初始化
 
 
